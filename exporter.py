@@ -268,6 +268,9 @@ class RainMachineCollector:
                 log.warning("Section %s failed: %s", name, exc)
 
         today = _today_str()
+        # Populated by do_programs() and reused by do_dailystats_details() to
+        # avoid fetching /program twice in the same scrape.
+        programs_cache = None
 
         # ---- device info & versions ---------------------------------------------
         def do_info():
@@ -329,7 +332,9 @@ class RainMachineCollector:
         # used to determine "is this scheduled today". That's derived separately in
         # do_dailystats_details(), which is the authoritative source for today.
         def do_programs():
+            nonlocal programs_cache
             programs = rm_get("/program").get("programs", [])
+            programs_cache = programs
             active_count = 0
             for program in programs:
                 labels = [str(program["uid"]), program.get("name", f"Program {program['uid']}")]
@@ -377,9 +382,10 @@ class RainMachineCollector:
 
             # today_programs only carries program ids, not names - look up names
             # from the program list so scheduled-today can be labeled consistently
-            # with the other per-program metrics.
+            # with the other per-program metrics. Reuse the list fetched by
+            # do_programs() when available to avoid a duplicate /program call.
             scheduled_program_ids = {p["id"] for p in today_programs}
-            programs = rm_get("/program").get("programs", [])
+            programs = programs_cache if programs_cache is not None else rm_get("/program").get("programs", [])
             for program in programs:
                 labels = [str(program["uid"]), program.get("name", f"Program {program['uid']}")]
                 program_scheduled_today.add_metric(labels, 1 if program["uid"] in scheduled_program_ids else 0)
