@@ -1,6 +1,6 @@
 [project]
 name = "rainmachine-exporter"
-version = "0.0.1"
+version = "1.0.0"
 description = "Prometheus exporter for RainMachine sprinkler controllers"
 readme = "README.md"
 license = { text = "MIT" }
