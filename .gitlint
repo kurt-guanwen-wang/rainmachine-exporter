@@ -1,0 +1,6 @@
+[general]
+ignore=body-is-missing,title-trailing-punctuation
+contrib=contrib-title-conventional-commits
+
+[contrib-title-conventional-commits]
+types = fix,feat,chore,docs,style,refactor,perf,test,build,ci,revert

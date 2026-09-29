@@ -1,0 +1,35 @@
+[project]
+name = "rainmachine-exporter"
+version = "0.0.1"
+description = "Prometheus exporter for RainMachine sprinkler controllers"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+    "prometheus-client==0.20.0",
+    "requests==2.32.3",
+    "tzdata==2025.2",
+]
+
+[project.optional-dependencies]
+build = ["uv>=0.5"]
+dev = ["python-semantic-release~=10.7", "gitlint-core~=0.19"]
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+build_command = """
+    python -m pip install -e '.[build]'
+    uv lock --upgrade-package "$PACKAGE_NAME"
+    git add uv.lock
+"""
+commit_message = "chore(release): {version} [skip ci]"
+tag_format = "v{version}"
+
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG.md"
+
+[tool.semantic_release.branches.main]
+match = "main"
+
+[tool.uv]
+package = false
