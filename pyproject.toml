@@ -6,9 +6,9 @@ readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.11"
 dependencies = [
-    "prometheus-client==0.20.0",
-    "requests==2.32.3",
-    "tzdata==2025.2",
+    "prometheus-client==0.26.0",
+    "requests==2.34.2",
+    "tzdata==2026.4",
 ]
 
 [project.optional-dependencies]
