@@ -33,13 +33,18 @@ log = logging.getLogger("rainmachine_exporter")
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-RAINMACHINE_BASE_URL = os.environ.get("RAINMACHINE_BASE_URL", "https://rainmachine.home.arpa:8080/api/4")
+RAINMACHINE_BASE_URL = os.environ.get("RAINMACHINE_BASE_URL", "")
 RAINMACHINE_PASSWORD = os.environ.get("RAINMACHINE_PASSWORD", "")
 TIMEZONE = os.environ.get("TIMEZONE", "America/Los_Angeles")
 SCRAPE_INTERVAL = int(os.environ.get("SCRAPE_INTERVAL", "60"))
 EXPORTER_PORT = int(os.environ.get("EXPORTER_PORT", "9100"))
 # How many of the upcoming dailystats days to export (RainMachine returns 6).
 FORECAST_DAYS = int(os.environ.get("FORECAST_DAYS", "6"))
+
+if not RAINMACHINE_BASE_URL:
+    raise SystemExit("RAINMACHINE_BASE_URL environment variable is required.")
+if not RAINMACHINE_PASSWORD:
+    raise SystemExit("RAINMACHINE_PASSWORD environment variable is required.")
 
 # ---------------------------------------------------------------------------
 # RainMachine API helpers

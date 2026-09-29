@@ -29,7 +29,7 @@ The exporter is configured entirely via environment variables:
 
 | Variable                | Required | Default                                       | Description                                          |
 |-------------------------|----------|------------------------------------------------|-------------------------------------------------------|
-| `RAINMACHINE_BASE_URL`  | no       | `https://rainmachine.home.arpa:8080/api/4`     | Base URL of the RainMachine local API                 |
+| `RAINMACHINE_BASE_URL`  | yes      | —                                                | Base URL of the RainMachine local API, e.g. `https://RAIM_MACHINE_IP_OR_DNS:8080/api/4` |
 | `RAINMACHINE_PASSWORD`  | yes      | —                                                | RainMachine controller admin password                 |
 | `TIMEZONE`              | no       | `America/Los_Angeles`                          | IANA timezone used to compute "today"                  |
 | `EXPORTER_PORT`         | no       | `9100`                                          | Port the exporter listens on                           |
@@ -44,7 +44,7 @@ verification for local API calls only.
 
 ```bash
 docker run -d \
-  -e RAINMACHINE_BASE_URL=https://rainmachine.home.arpa:8080/api/4 \
+  -e RAINMACHINE_BASE_URL=https://RAIM_MACHINE_IP_OR_DNS:8080/api/4 \
   -e RAINMACHINE_PASSWORD=your-password \
   -p 9100:9100 \
   nirvanawgw/rainmachine-exporter:latest
@@ -58,7 +58,7 @@ This project uses [`uv`](https://docs.astral.sh/uv/) for dependency management.
 
 ```bash
 uv sync --no-dev
-RAINMACHINE_PASSWORD=your-password uv run python exporter.py
+RAINMACHINE_BASE_URL=https://RAIM_MACHINE_IP_OR_DNS:8080/api/4 RAINMACHINE_PASSWORD=your-password uv run python exporter.py
 ```
 
 ## Development
